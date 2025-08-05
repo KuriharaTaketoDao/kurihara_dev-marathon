@@ -1,0 +1,22 @@
+<!-- detail.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>顧客詳細</title>
+</head>
+<body>
+    <h2>顧客詳細</h2>
+    <table border="1">
+        <tr><th>customer_id</th><td th:text="${customer.customerId}"></td></tr>
+        <tr><th>company_name</th><td th:text="${customer.companyName}"></td></tr>
+        <tr><th>industry</th><td th:text="${customer.industry}"></td></tr>
+        <tr><th>contact</th><td th:text="${customer.contact}"></td></tr>
+        <tr><th>location</th><td th:text="${customer.location}"></td></tr>
+        <tr><th>created_date</th><td th:text="${customer.createdDate}"></td></tr>
+        <tr><th>updated_date</th><td th:text="${customer.updatedDate}"></td></tr>
+    </table>
+    <br>
+    <a href="/customer/list.html">戻る</a>
+</body>
+</html>

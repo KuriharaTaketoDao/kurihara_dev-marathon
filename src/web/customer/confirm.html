@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>顧客情報確認</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">顧客情報の確認</h2>
+    <dl class="row">
+      <dt class="col-sm-3">会社名</dt>
+      <dd class="col-sm-9" id="companyName"></dd>
+
+      <dt class="col-sm-3">業種</dt>
+      <dd class="col-sm-9" id="industry"></dd>
+
+      <dt class="col-sm-3">連絡先</dt>
+      <dd class="col-sm-9" id="contact"></dd>
+
+      <dt class="col-sm-3">所在地</dt>
+      <dd class="col-sm-9" id="location"></dd>
+    </dl>
+
+    <button class="btn btn-secondary" id="backBtn">戻る</button>
+    <button class="btn btn-primary" id="submitBtn">登録する</button>
+  </div>
+
+  <script type="module">
+    import config from '../config.js';
+
+    // URLパラメータを取得して画面にセット
+    const params = new URLSearchParams(window.location.search);
+    const fields = ["companyName", "industry", "contact", "location"];
+
+    fields.forEach(field => {
+      const value = params.get(field) || "";
+      document.getElementById(field).textContent = value;
+    });
+
+    // 戻るボタン
+    document.getElementById("backBtn").addEventListener("click", () => {
+      window.history.back();
+    });
+
+    // 登録ボタン
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const body = {};
+      fields.forEach(field => {
+        body[field] = params.get(field);
+      });
+
+      fetch(config.apiUrl + "/add-customer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("登録が完了しました。");
+          window.location.href = "list.html";
+        } else {
+          alert("登録に失敗しました。");
+        }
+      })
+      .catch(error => {
+        console.error("通信エラー:", error);
+        alert("通信エラーが発生しました。");
+      });
+    });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
