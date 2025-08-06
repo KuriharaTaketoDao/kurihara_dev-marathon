@@ -31,6 +31,42 @@ app.get("/customers", async (req, res) => {
   }
 });
 
+app.get("/customers/:id", async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM customers WHERE customer_id = $1",
+      [customerId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// 顧客削除
+app.delete("/customers/:id", async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const result = await pool.query("DELETE FROM customers WHERE customer_id = $1", [customerId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Customer not found" });
+    }
+
+    res.status(200).json({ message: "Customer deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 app.post("/add-customer", async (req, res) => {
   try {
