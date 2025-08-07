@@ -20,5 +20,7 @@ jobs:
           port: ${{ secrets.DEV_SSH_PORT }}
           username: ${{ secrets.DEV_SSH_USER }}
           key: ${{ secrets.DEV_SSH_KEY }}
+          key_format: raw
+          decode: true
           script: |
             bash /app/taketo_kurihara/deploy.sh taketo_kurihara
