@@ -1,5 +1,5 @@
 name: ssh command
-# aaaaaa
+
 on:
   push:
     branches:
@@ -9,6 +9,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Add SSH key to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.DEV_SSH_HOST }} >> ~/.ssh/known_hosts
+
       - id: ssh
         uses: invi5H/ssh-action@v1
         with:
@@ -18,4 +23,3 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSHE_SSH_KEY }}
 
       - run: ssh ${{ steps.ssh.outputs.SERVER }} bash /app/taketo_kurihara/deploy.sh taketo_kurihara
-
