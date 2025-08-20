@@ -11,11 +11,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const { Pool } = require("pg");
+// const pool = new Pool({
+//   user: "5059", // PostgreSQLのユーザー名に置き換えてください
+//   host: "postgres",
+//   database: "5059", // PostgreSQLのデータベース名に置き換えてください
+//   password: "postgres", // PostgreSQLのパスワードに置き換えてください
+//   port: 5432,
+// });
+
 const pool = new Pool({
-  user: "5059", // PostgreSQLのユーザー名に置き換えてください
-  host: "postgres",
-  database: "5059", // PostgreSQLのデータベース名に置き換えてください
-  password: "postgres", // PostgreSQLのパスワードに置き換えてください
+  user: "user_taketo_kurihara",
+  host: "localhost",
+  database: "db_taketo_kurihara",
+  password: "5Rw5YDaWc5jc", // 実際のパスワード
   port: 5432,
 });
 
