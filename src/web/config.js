@@ -1,5 +1,5 @@
 const config = {
-  apiUrl: 'http://localhost:5059'
+  apiUrl: 'http://dev.marathon.rplearn.net:5059'
 };
 
 export default config;
