@@ -1,5 +1,5 @@
 const config = {
-  apiUrl: 'http://dev.marathon.rplearn.net/taketo_kurihara'  // /customer は削除
+  apiUrl: '/api_taketo_kurihara'  
 };
 
 export default config;
