@@ -23,7 +23,7 @@ jobs:
           SSH_KEY: ${{ secrets.DEV_SSH_KEY }}
 
       - name: Deploy & Test on Staging
-        run: ssh ${{ steps.staging_ssh.outputs.SERVER }} bash /app/taketo_kurihara/deploy.sh taketo_kurihara
+        run: ssh -t ${{ steps.staging_ssh.outputs.SERVER }} bash /app/taketo_kurihara/deploy.sh taketo_kurihara
 
   production-deploy:
     name: Deploy to Production
@@ -44,4 +44,4 @@ jobs:
           SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
 
       - name: Deploy to Production
-        run: ssh ${{ steps.prod_ssh.outputs.SERVER }} bash /app/taketo_kurihara/deploy.sh taketo_kurihara
+        run: ssh -t ${{ steps.prod_ssh.outputs.SERVER }} bash /app/taketo_kurihara/deploy.sh taketo_kurihara
