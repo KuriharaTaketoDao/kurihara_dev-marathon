@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>顧客詳細</title>
+</head>
+<body>
+  <h2>顧客詳細</h2>
+  <form id="edit-form">
+    <table border="1">
+      <tbody id="customer-detail">
+        <!-- フォームがここに挿入される -->
+      </tbody>
+    </table>
+    <br>
+    <button type="submit">保存</button>
+  </form>
+
+  <br>
+  <a href="/customer/list.html">戻る</a>
+  <button id="delete-button">削除</button>
+
+  <script type="module">
+    import config from "../config.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const customerId = params.get("id");
+
+    fetch(`${config.apiUrl}/customers/${customerId}`)
+      .then(response => response.json())
+      .then(customer => {
+        const detail = document.getElementById("customer-detail");
+
+        // 編集可能なフィールド
+        const editableFields = [
+          "company_name", "industry", "contact", "location"
+        ];
+
+        // 表示のみのフィールド
+        const readOnlyFields = [
+          "customer_id", "created_date", "updated_date"
+        ];
+
+        // 編集可能なフィールドを input で表示
+        editableFields.forEach(field => {
+          const row = document.createElement("tr");
+          const th = document.createElement("th");
+          const td = document.createElement("td");
+
+          th.textContent = field;
+          const input = document.createElement("input");
+          input.type = "text";
+          input.name = field;
+          input.value = customer[field] ?? "";
+          td.appendChild(input);
+
+          row.appendChild(th);
+          row.appendChild(td);
+          detail.appendChild(row);
+        });
+
+        // 読み取り専用のフィールドを text 表示
+        readOnlyFields.forEach(field => {
+          const row = document.createElement("tr");
+          const th = document.createElement("th");
+          const td = document.createElement("td");
+
+          th.textContent = field;
+          td.textContent = customer[field] ?? "";
+          row.appendChild(th);
+          row.appendChild(td);
+          detail.appendChild(row);
+        });
+      })
+      .catch(error => console.error("取得エラー:", error));
+
+    // 保存処理（PUT）
+    document.getElementById("edit-form").addEventListener("submit", e => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const updatedCustomer = {};
+      for (const [key, value] of formData.entries()) {
+        updatedCustomer[key] = value;
+      }
+
+      fetch(`${config.apiUrl}/customers/${customerId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedCustomer)
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("更新しました");
+          location.reload();
+        } else {
+          alert("更新に失敗しました");
+        }
+      })
+      .catch(error => {
+        console.error("更新エラー:", error);
+        alert("エラーが発生しました");
+      });
+    });
+
+    // 削除処理
+    document.getElementById("delete-button").addEventListener("click", () => {
+      const confirmDelete = confirm("削除していいですか？");
+
+      if (confirmDelete) {
+        fetch(`${config.apiUrl}/customers/${customerId}`, {
+          method: "DELETE"
+        })
+        .then(response => {
+          if (response.ok) {
+            alert("削除しました");
+            window.location.href = "/customer/list.html";
+          } else {
+            alert("削除に失敗しました");
+          }
+        })
+        .catch(error => {
+          console.error("削除エラー:", error);
+          alert("エラーが発生しました");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

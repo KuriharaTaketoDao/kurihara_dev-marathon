@@ -14,7 +14,7 @@ services:
     container_name: nodejs
     image: node:22-bullseye
     ports:
-      - "1985:1985"
+      - "5059:5059"
     volumes:
       - ./src/node:/app
       - ./work:/work
@@ -27,12 +27,12 @@ services:
     restart: always
     shm_size: 256mb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 10s
       timeout: 5s
       retries: 3
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ~/postgres_data:/var/lib/postgresql/data
       - ./work:/work
     working_dir: /work
     environment:
@@ -49,7 +49,8 @@ services:
     ports:
       - 8888:80
     volumes:
-      - ./pgadmin:/var/lib/pgadmin
+    - /mnt/c/env/dev-marathon/pgadmin:/var/lib/pgadmin
+
       - ./work:/work
     environment:
       PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
