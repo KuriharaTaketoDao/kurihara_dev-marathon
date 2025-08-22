@@ -23,7 +23,7 @@ const pool = new Pool({
   user: "user_taketo_kurihara",
   host: "localhost",
   database: "db_taketo_kurihara",
-  password: "5Rw5YDaWc5jc", // 実際のパスワード
+  password: "5Rw5YDaWc5jc", // 実際のパスワードdaooooooooooooooo
   port: 5432,
 });
 
